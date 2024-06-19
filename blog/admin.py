@@ -8,18 +8,19 @@
 from django.contrib import admin
 from .models import Post, Account
 
-# @admin.register(Post)
-# class PostAdmin(admin.ModelAdmin):
-#     list_display = ('title', 'slug', 'author', 'status', 'published')
-#     list_filter = ('status', 'created', 'updated', 'author')
-#     search_fields = ('title', 'caption')
-#     raw_id_fields = ('author',)
-#     date_hierarchy = 'published'
-#     ordering = ('status', '-published')
-#     list_editable = ('status',)
-#     prepopulated_fields = {'slug': ('title',)}
-#     list_display_links = ('slug', 'title',)
-#
+
+@admin.register(Post)
+class PostAdmin(admin.ModelAdmin):
+    list_display = ('title', 'slug', 'author', 'status', 'published')
+    list_filter = ('status', 'created', 'updated', 'author')
+    search_fields = ('title', 'caption')
+    raw_id_fields = ('author',)
+    date_hierarchy = 'published'
+    ordering = ('status', '-published')
+    list_editable = ('status',)
+    prepopulated_fields = {'slug': ('title',)}
+    list_display_links = ('slug', 'title',)
+
 
 @admin.register(Account)
 class AccountAdmin(admin.ModelAdmin):
