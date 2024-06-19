@@ -1,0 +1,33 @@
+{% extends 'blog/parent/base.html' %}
+{% load static %}
+{% block head %}
+    <meta charset="UTF-8">
+{% block title %}{% endblock%}
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/list.css' %}">
+{% endblock %}
+{% block body %}
+
+
+    <h1>لیست آهنگ ها</h1>
+    <div>
+        {% for post in posts %}
+            <div class="post-container">
+                <div class="content">
+                    <h2>عنوان: {{ post.title }}</h2>
+                    {% if post.image_file %}
+                    <img src="{{ post.image_file.url }}" alt="{{ post.image_file.name }}">
+                    {% endif %}
+                    <h3>نویسنده: {{ post.author.username }}</h3>
+                    <p>توضیحات: {{ post.caption}}</p>
+                    <div class="continue-box">
+                        <a href="{{ post.get_absolute_url }}" class="continue-link">ادامه مطلب</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% include 'blog/partials/pagination.html' with page=posts %}
+{#{% include 'blog/partials/pagination.html' with page=page_obj %}#}
+
+{% endblock %}

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/pagination.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+
+        <ul id="post-list">
+        </ul>
+        <div class="pagination">
+            {% if posts.has_previous %}
+                <a href="?page={{ posts.previous_page_number }}"><i class="fa-solid fa-angles-right"></i></a>
+            {% endif %}
+
+            {% for num in posts.paginator.page_range %}
+                {% if posts.number == num %}
+                    <span class="current">{{ num }}</span>
+                {% else %}
+                    <a href="?page={{ num }}">{{ num }}</a>
+                {% endif %}
+            {% endfor %}
+
+            {% if posts.has_next %}
+                <a href="?page={{ posts.next_page_number }}"><i class="fa-solid fa-angles-left"></i></a>
+            {% endif %}
+        </div>
+
+
+
+</body>
+</html>
