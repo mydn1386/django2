@@ -1,0 +1,132 @@
+body {
+    background-color: #f4f4f4;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    direction: rtl;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 450px;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.music-player, .sub {
+    background-color: white;
+    border-radius: 15px;
+    width: 100%;
+    overflow: hidden;
+    text-align: center;
+    padding: 20px;
+    margin-top: 20px;
+    box-sizing: border-box;
+}
+
+.music-player img {
+    width: 100%;
+    height: auto;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 15px;
+    border-radius: 15px;
+}
+
+.music-player .details {
+    padding: 10px;
+}
+
+.music-player .details h1 {
+    font-size: 1.2em;
+    margin: 5px 0;
+}
+
+.music-player .details p {
+    font-size: 0.9em;
+    margin: 5px 0;
+    color: #555;
+}
+
+.music-player .audio-player {
+    position: relative;
+    margin-top: 10px;
+}
+
+.music-player .audio-player audio {
+    width: 100%;
+    display: block;
+    direction: ltr;
+}
+
+.music-player .controls {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 10px;
+    padding: 10px 0;
+}
+
+.music-player .controls button {
+    background: none;
+    border: none;
+    font-size: 1.5em;
+    cursor: pointer;
+    color: #333;
+}
+
+.music-player .controls button:focus {
+    outline: none;
+}
+
+.progress-container {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.progress-time {
+    font-size: 0.8em;
+    color: #555;
+}
+
+.progress-bar {
+    flex-grow: 1;
+    height: 5px;
+    background: #ddd;
+    border-radius: 5px;
+    overflow: hidden;
+    margin: 0 10px;
+    cursor: pointer;
+}
+
+.progress {
+    height: 100%;
+    background: #007bff;
+    border-radius: 5px;
+    width: 0;
+}
+
+.sub {
+    font-size: 16px;
+    background-color: white;
+    border-radius: 15px;
+    width: 100%;
+    text-align: center; /* متن را وسط‌چین می‌کند */
+    padding: 20px;
+    margin-top: 20px;
+    line-height: 1.4;
+    word-wrap: break-word;
+    hyphens: auto;
+    overflow: visible;
+    box-sizing: border-box;
+}
+
+.sub p {
+    margin: 5px 0;
+}

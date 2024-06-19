@@ -1,0 +1,91 @@
+body {
+    direction: rtl; /* تنظیم جهت متن به سمت راست */
+    line-height: 1.6;
+    background-color: #f9f9f9; /* رنگ پس زمینه اصلی */
+    color: #333; /* رنگ متن اصلی */
+    margin: 0;
+    padding: 30px 40px 20px 40px; /* فاصله از بالا، راست، پایین، چپ (20px از هر طرف اضافه شده است) */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* قرار دادن محتوا به وسط */
+    min-height: 100vh; /* حداقل ارتفاع صفحه */
+}
+
+h1 {
+    text-align: right; /* چسباندن متن عنوان به سمت راست */
+    color: black; /* رنگ عنوان اصلی */
+    margin-bottom: 20px;
+    font-size: 2em;
+    width: 100%; /* استفاده از کل عرض صفحه */
+}
+
+h2, h3 {
+    color: #2c3e50; /* رنگ عنوان فرعی */
+}
+
+h2 {
+    font-size: 1.8em; /* اندازه فونت عنوان اصلی */
+    text-align: right; /* راست چین کردن عنوان */
+    margin-bottom: 10px;
+    position: relative;
+    right: 0; /* چسباندن به سمت راست */
+}
+
+h3 {
+    font-size: 1.4em; /* اندازه فونت عنوان فرعی */
+    text-align: center; /* وسط چین کردن عنوان فرعی */
+    margin-bottom: 10px;
+}
+
+p {
+    text-align: center; /* وسط چین کردن متن */
+    font-size: 1.1em; /* اندازه فونت متن */
+    line-height: 1.8;
+    color: #555; /* رنگ متن */
+    margin-bottom: 10px;
+}
+
+.post-container {
+    background-color: #fff; /* رنگ پس زمینه بخش پست */
+    padding: 10px; /* حاشیه داخلی باکس */
+    margin: 30px 0; /* فاصله از بالا و پایین ۲۰ پیکسل */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* سایه */
+    width: 400px; /* عرض ثابت برای باکس */
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* وسط چین کردن باکس */
+
+}
+
+.post-container:hover {
+    transform: translateY(-5px); /* حرکت به بالا هنگام هاور */
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+
+img {
+    width: 250px; /* عرض 100% برای تصاویر داخل باکس */
+    height: auto; /* ارتفاع خودکار تصاویر */
+    border-radius: 8px; /* گوشه های گرد تصاویر */
+    margin-bottom: 0; /* فاصله بین تصویر و توضیحات */
+}
+
+.continue-box {
+    text-align: center;
+    margin-top: 15px;
+    padding: 10px 20px; /* حاشیه داخلی باکس ادامه مطلب */
+    background-color: #000; /* رنگ پس زمینه باکس ادامه مطلب */
+    border-radius: 5px; /* گوشه گرد باکس */
+}
+
+.continue-link {
+    text-decoration: none;
+    color: #fff; /* رنگ متن سفید */
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+.continue-link:hover {
+    color: #333; /* تغییر رنگ هنگام هاور */
+}
