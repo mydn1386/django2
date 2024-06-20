@@ -4,7 +4,8 @@ from .models import Post, Account
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
-from .forms import AccountForm
+from .forms import AccountForm, ContactUsForm
+from django.core.mail import send_mail
 
 
 def postlist(request):
@@ -60,8 +61,29 @@ def useraccount(request):
             # Create a new form instance with the invalid data
             form = AccountForm(request.POST)
             # Re-render the form with the invalid data
-            return render(request, 'blog/forms/accountform.html', {'form': form, 'account':account})
+            return render(request, 'blog/forms/accountform.html', {'form': form, 'account': account})
 
     else:
-        form = AccountForm(initial={'first_name': user.first_name, 'last_name': user.last_name, 'gender': account.gender, 'address': account.address, 'birth': account.birth})
-    return render(request, 'blog/forms/accountform.html', {'form': form,'account':account})
+        form = AccountForm(
+            initial={'first_name': user.first_name, 'last_name': user.last_name, 'gender': account.gender,
+                     'address': account.address, 'birth': account.birth})
+    return render(request, 'blog/forms/accountform.html', {'form': form, 'account': account})
+
+
+def contactus(request):
+    if request.method == 'POST':
+        form = ContactUsForm(request.POST)
+        if form.is_valid():
+            cd = form.cleaned_data
+            name = cd['name']
+            email = cd['email']
+            subject = cd['subject']
+            message = cd['message']
+            phone = cd['phone']
+            msg = 'نام: {0}\nموضوع: {2}\nشماره تماس: {3}\nایمیل: {1}\nپیام: {4}'.format(name, email, subject, phone, message)
+            send_mail(subject, msg, 'yasin.danesh@outlook.com', ['yasin.danesh@outlook.com'], fail_silently=False)
+            sent = True
+            return render(request, 'blog/forms/Contact-Us.html', {'form': form, 'sent': sent})
+    else:
+        form = ContactUsForm()
+    return render(request, 'blog/forms/Contact-Us.html', {'form': form})

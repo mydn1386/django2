@@ -124,10 +124,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # ----------------------
-# # send_mail(subject, message,sender, [گیرنده], fail_silently= false )
-# EMAIL_HOST = 'smtp-mail.outlook.com'
-# EMAIL_PORT = 587
-# EMAIL_HOST_USER = "yasin.danesh@outlook.com"
-# EMAIL_HOST_PASSWORD = '1745233024Dddd'
-# EMAIL_USE_TLS = True
-# EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+# send_mail(subject, message,sender, [گیرنده], fail_silently= false )
+EMAIL_HOST = 'smtp-mail.outlook.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = "yasin.danesh@outlook.com"
+EMAIL_HOST_PASSWORD = '1745233024Dddd'
+EMAIL_USE_TLS = True
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"

@@ -1,0 +1,61 @@
+{% extends 'blog/parent/base.html' %}
+{% load static %}
+
+{% block head %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/contact-us.css' %}">
+    <title>Contact Us</title>
+{% endblock %}
+
+{% block body %}
+<div class="contact-form-container">
+    <h1>تماس با ما</h1>
+    {% if sent %}
+        <script>alert('پیام با موفقیت ارسال شد ')</script>
+    {% else %}
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="id_name">نام و نام خانوادگی:</label>
+                {{ form.name }}
+            </div>
+            <div class="form-group">
+                <label for="id_email">ایمیل:</label>
+                {{ form.email }}
+            </div>
+            <div class="form-group">
+                <label for="id_phone">شماره تماس:</label>
+                {{ form.phone }}
+            </div>
+            <div class="form-group">
+                <label for="id_message">پیام:</label>
+                {{ form.message }}
+            </div>
+            <div class="form-group">
+                <label for="id_subject">موضوع:</label>
+                <select id="id_subject" name="id_subject" required>
+                    <option value="انتقاد و پیشنهاد" {% if form.subject.value == "انتقاد و پیشنهاد" %}selected{% endif %}>انتقاد و پیشنهاد</option>
+                    <option value="شکایت" {% if form.subject.value == "شکایت" %}selected{% endif %}>شکایت</option>
+                </select>
+            </div>
+            <button type="submit" class="submit-btn">ارسال</button>
+        </form>
+    {% endif %}
+
+    {% if form.errors %}
+        <div class="errors">
+            خطا را اصلاح کنید
+            <br>
+            {% for field in form %}
+                {% if field.errors %}
+                    {% for error in field.errors %}
+                        <p>{{ field.label }}: {{ error }}</p>
+                    {% endfor %}
+                {% endif %}
+            {% endfor %}
+            {% if form.non_field_errors %}
+                {{ form.non_field_errors }}
+            {% endif %}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
