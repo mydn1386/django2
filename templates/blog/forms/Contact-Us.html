@@ -32,9 +32,10 @@
             </div>
             <div class="form-group">
                 <label for="id_subject">موضوع:</label>
-                <select id="id_subject" name="id_subject" required>
-                    <option value="انتقاد و پیشنهاد" {% if form.subject.value == "انتقاد و پیشنهاد" %}selected{% endif %}>انتقاد و پیشنهاد</option>
-                    <option value="شکایت" {% if form.subject.value == "شکایت" %}selected{% endif %}>شکایت</option>
+                <select id="id_subject" name="subject">
+                    <option value="">انتخاب کنید</option>
+                    <option value="انتقاد و پیشنهاد">انتقاد و پیشنهاد</option>
+                    <option value="شکایت">شکایت</option>
                 </select>
             </div>
             <button type="submit" class="submit-btn">ارسال</button>
