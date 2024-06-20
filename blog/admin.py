@@ -38,4 +38,4 @@ class AccountAdmin(admin.ModelAdmin):
     def user_last_name(self, obj):
         return obj.user.last_name
     user_last_name.short_description = 'Last Name'
-
+    #test
