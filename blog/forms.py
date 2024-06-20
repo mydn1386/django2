@@ -1,5 +1,5 @@
 from django import forms
-from .models import Account
+# from .models import Account
 
 
 # class AccountForm(forms.ModelForm):
@@ -30,3 +30,6 @@ class AccountForm(forms.Form):
 #     class Meta:
 #         model = Account
 #         fields = ('first_name', 'last_name', 'gender', 'address', 'birth')
+
+# class ContactUsForm(forms.Form):
+#     message= forms.CharField(widget=forms.Textarea, required=)
