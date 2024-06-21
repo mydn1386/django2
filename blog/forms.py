@@ -1,7 +1,5 @@
 from django import forms
-
-
-# from .models import Account
+from .models import Account, Comment
 
 
 # class AccountForm(forms.ModelForm):
@@ -26,25 +24,25 @@ class AccountForm(forms.Form):
 
 
 # from django import forms
-from .models import Account
+# from .models import Account
 
 
-class AccountForm(forms.ModelForm):
-    first_name = forms.CharField(max_length=30)  # Adding User's first_name
-    last_name = forms.CharField(max_length=30)  # Adding User's last_name
-
-    class Meta:
-        model = Account
-        fields = ('first_name', 'last_name', 'gender', 'address', 'birth')
-
-    def save(self, commit=True):
-        account = super(AccountForm, self).save(commit=False)
-        account.user.first_name = self.cleaned_data['first_name']
-        account.user.last_name = self.cleaned_data['last_name']
-        if commit:
-            account.save()
-            account.user.save()
-        return account
+# class AccountForm(forms.ModelForm):
+#     first_name = forms.CharField(max_length=30)  # Adding User's first_name
+#     last_name = forms.CharField(max_length=30)  # Adding User's last_name
+#
+#     class Meta:
+#         model = Account
+#         fields = ('first_name', 'last_name', 'gender', 'address', 'birth')
+#
+#     def save(self, commit=True):
+#         account = super(AccountForm, self).save(commit=False)
+#         account.user.first_name = self.cleaned_data['first_name']
+#         account.user.last_name = self.cleaned_data['last_name']
+#         if commit:
+#             account.save()
+#             account.user.save()
+#         return account
 
 
 class ContactUsForm(forms.Form):
@@ -57,3 +55,9 @@ class ContactUsForm(forms.Form):
         ('شکایت', 'شکایت'),
     ]
     subject = forms.ChoiceField(label='موضوع', choices=SUBJECT_CHOICES)
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ('Comment', 'name',)

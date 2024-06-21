@@ -6,7 +6,7 @@
 # actions = [delete_selected]
 
 from django.contrib import admin
-from .models import Post, Account
+from .models import Post, Account, Comment
 
 
 @admin.register(Post)
@@ -29,13 +29,28 @@ class AccountAdmin(admin.ModelAdmin):
 
     def user_email(self, obj):
         return obj.user.email
+
     user_email.short_description = 'Email'
 
     def user_first_name(self, obj):
         return obj.user.first_name
+
     user_first_name.short_description = 'First Name'
 
     def user_last_name(self, obj):
         return obj.user.last_name
+
     user_last_name.short_description = 'Last Name'
-    #test
+    # test
+
+
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ('username', 'post', 'published', 'created','name')
+    list_filter = ('published', 'created',)
+    list_editable = ('published',)
+
+    def username(self, obj):
+        return obj.user.username
+
+    username.short_description = 'Username'

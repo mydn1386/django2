@@ -130,3 +130,75 @@ body {
 .sub p {
     margin: 5px 0;
 }
+/* General styles for the comment section */
+.comments, .comment-form {
+    background-color: #f7f7f7;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.comments h2, .comment-form h2 {
+    font-size: 1.5em;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #333;
+}
+
+/* Comment item styles */
+.comment {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+.comment p {
+    margin: 5px 0;
+}
+
+/* Comment form styles */
+.custom-comment-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.custom-comment-form p {
+    margin-bottom: 10px;
+}
+
+.custom-comment-form input[type="text"],
+.custom-comment-form input[type="email"],
+.custom-comment-form textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+    transition: border-color 0.3s;
+}
+
+.custom-comment-form input[type="text"]:focus,
+.custom-comment-form input[type="email"]:focus,
+.custom-comment-form textarea:focus {
+    border-color: #800080;
+}
+
+.custom-comment-form button {
+    background-color: #800080;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1em;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.custom-comment-form button:hover {
+    background-color: #660066;
+}
+

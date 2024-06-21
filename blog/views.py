@@ -1,10 +1,12 @@
+from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView
-from .models import Post, Account
+from .models import Post, Account, Comment
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
-from .forms import AccountForm, ContactUsForm
+from .forms import AccountForm, ContactUsForm, CommentForm
 from django.core.mail import send_mail
+from django.contrib import messages
 
 
 def postlist(request):
@@ -25,9 +27,25 @@ def index(request):
     return HttpResponse('سلام')
 
 
-def postdetail(request, post, pk):
-    post = get_object_or_404(Post, slug=post, id=pk)
-    return render(request, 'blog/post/detail.html', {'post': post})
+def postdetail(request, slug, pk, post=None):
+    if post is None:
+        post = get_object_or_404(Post, status='published', slug=slug, id=pk)
+    comments = post.comment_set.filter(published="Published")
+    new_comment = None
+    if request.method == "POST":
+        comment_form = CommentForm(request.POST)
+        if comment_form.is_valid():
+            new_comment = comment_form.save(commit=False)
+            new_comment.post = post
+            new_comment.user = request.user
+            new_comment.save()
+            messages.success(request, 'کامنت شما با موفقیت ارسال شد.')
+            return redirect('blog:post_detail', slug=post.slug, pk=post.pk)
+    else:
+        comment_form = CommentForm()
+
+    return render(request, 'blog/post/detail.html',
+                  {'post': post, 'comments': comments, "new_comment": new_comment, 'comment_form': comment_form})
 
 
 def useraccount(request):
@@ -52,7 +70,9 @@ def useraccount(request):
             form = AccountForm(request.POST)
             return render(request, 'blog/forms/accountform.html', {'form': form, 'account': account})
     else:
-        form = AccountForm(initial={'first_name': user.first_name, 'last_name': user.last_name, 'gender': account.gender, 'address': account.address, 'birth': account.birth})
+        form = AccountForm(
+            initial={'first_name': user.first_name, 'last_name': user.last_name, 'gender': account.gender,
+                     'address': account.address, 'birth': account.birth})
     return render(request, 'blog/forms/accountform.html', {'form': form, 'account': account})
 
 
@@ -66,7 +86,8 @@ def contactus(request):
             subject = cd['subject']
             message = cd['message']
             phone = cd['phone']
-            msg = 'نام: {0}\nموضوع: {2}\nشماره تماس: {3}\nایمیل: {1}\nپیام: {4}'.format(name, email, subject, phone, message)
+            msg = 'نام: {0}\nموضوع: {2}\nشماره تماس: {3}\nایمیل: {1}\nپیام: {4}'.format(name, email, subject, phone,
+                                                                                        message)
             send_mail(subject, msg, 'yasin.danesh@outlook.com', ['yasin.danesh@outlook.com'], fail_silently=False)
             return redirect('blog:post_list')
     else:

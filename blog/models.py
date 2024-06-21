@@ -1,4 +1,6 @@
 from __future__ import unicode_literals
+
+from django.conf import settings
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
@@ -21,7 +23,7 @@ class Post(models.Model):
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='draft')
     music_file = models.FileField(upload_to='music/', blank=True, null=True)
     image_file = models.FileField(upload_to='image/', blank=True, null=True)
-    singer = models.CharField(max_length=10, blank=True, null=True)
+    singer = models.CharField(max_length=20, blank=True, null=True)
     sub = models.TextField(max_length=1000000, blank=True, null=True)
 
     class Meta:
@@ -49,3 +51,22 @@ class Account(models.Model):
 
     def __str__(self):
         return self.user.first_name + " " + self.user.last_name
+
+
+class Comment(models.Model):
+    STATUS_CHOICES = (
+        ('Published','Published'),
+        ('Draft','Draft'),
+    )
+    Comment= models.TextField(max_length=150)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comment_set')
+    published = models.CharField(max_length=9, choices=STATUS_CHOICES, default='Draft')
+    created = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    name = models.CharField(max_length=20, )
+
+    class Meta:
+        ordering = ('created', )
+
+    def __str__(self):
+        return "Commented by {0} on {1}".format(self.user.username, self.post)
