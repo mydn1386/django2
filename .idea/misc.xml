@@ -3,7 +3,7 @@
   <component name="ProjectResources">
     <resource url="https://www.w3.org/2002/08/xhtml/xhtml1-transitional.dtd" location="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.11 (django2)" project-jdk-type="Python SDK" />
+  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.9 (djangoProject5)" project-jdk-type="Python SDK" />
   <component name="PyPackaging">
     <option name="earlyReleasesAsUpgrades" value="true" />
   </component>
