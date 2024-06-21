@@ -58,7 +58,7 @@ class Comment(models.Model):
         ('Published','Published'),
         ('Draft','Draft'),
     )
-    Comment= models.TextField(max_length=150)
+    Comment= models.CharField(max_length=150)
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comment_set')
     published = models.CharField(max_length=9, choices=STATUS_CHOICES, default='Draft')
     created = models.DateTimeField(auto_now_add=True)
