@@ -8,6 +8,7 @@ from .forms import AccountForm, ContactUsForm, CommentForm
 from django.core.mail import send_mail
 from django.contrib import messages
 from taggit.models import Tag
+from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank, TrigramSimilarity
 
 
 def postlist(request, tag_slug=None):
@@ -36,6 +37,7 @@ def postlist(request, tag_slug=None):
 
     return render(request, 'blog/post/list.html', context)
 
+
 def index(request):
     return HttpResponse('سلام')
 
@@ -58,7 +60,7 @@ def postdetail(request, slug, pk, post=None):
         comment_form = CommentForm()
 
     return render(request, 'blog/post/detail.html',
-                  {'post': post, 'comments': comments, "new_comment": new_comment, 'comment_form': comment_form,})
+                  {'post': post, 'comments': comments, "new_comment": new_comment, 'comment_form': comment_form, })
 
 
 def useraccount(request):
@@ -106,3 +108,39 @@ def contactus(request):
     else:
         form = ContactUsForm()
     return render(request, 'blog/forms/Contact-Us.html', {'form': form})
+
+
+def search(request, tag_slug=None):
+    query_name = request.POST.get('search_input') if request.method == "POST" else None
+    posts = Post.objects.filter(status='published')
+    tag = None
+
+    if query_name:
+        search_vector = SearchVector('caption', weight='B') + SearchVector('title', weight='A')
+        search_query = SearchQuery(query_name)
+        posts = posts.annotate(
+            rank=SearchRank(search_vector, search_query),
+            similarity=TrigramSimilarity('caption', query_name) + TrigramSimilarity('title', query_name)
+        ).filter(similarity__gte=0.3).order_by('-similarity', '-rank')
+
+    if tag_slug:
+        tag = get_object_or_404(Tag, slug=tag_slug)
+        posts = posts.filter(tags__in=[tag])
+
+    paginator = Paginator(posts, 2)  # Show 2 posts per page
+    page = request.GET.get('page')
+
+    try:
+        posts = paginator.page(page)
+    except PageNotAnInteger:
+        posts = paginator.page(1)
+    except EmptyPage:
+        posts = paginator.page(paginator.num_pages)
+
+    context = {
+        'posts': posts,
+        'page': page,
+        'tag': tag
+    }
+
+    return render(request, 'blog/post/list.html', context)

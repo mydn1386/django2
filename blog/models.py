@@ -42,13 +42,13 @@ class Account(models.Model):
         ('آقا', "آقا"),
         ('خانم', 'خانم'),
     )
-    phone = models.CharField(max_length=11, default='',)
+    phone = models.CharField(max_length=11, default='', )
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='account')
     gender = models.CharField(max_length=5, choices=GENDER_CHOICES, default='خانم')
-    address = models.TextField(blank=True,)
+    address = models.TextField(blank=True, )
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
-    birth = models.CharField(max_length=10,)
+    birth = models.CharField(max_length=10, )
 
     def __str__(self):
         return self.user.first_name + " " + self.user.last_name
@@ -56,10 +56,10 @@ class Account(models.Model):
 
 class Comment(models.Model):
     STATUS_CHOICES = (
-        ('Published','Published'),
-        ('Draft','Draft'),
+        ('Published', 'Published'),
+        ('Draft', 'Draft'),
     )
-    Comment= models.CharField(max_length=150)
+    Comment = models.CharField(max_length=150)
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comment_set')
     published = models.CharField(max_length=9, choices=STATUS_CHOICES, default='Draft')
     created = models.DateTimeField(auto_now_add=True)
@@ -67,7 +67,7 @@ class Comment(models.Model):
     name = models.CharField(max_length=20, )
 
     class Meta:
-        ordering = ('created', )
+        ordering = ('created',)
 
     def __str__(self):
         return "Commented by {0} on {1}".format(self.user.username, self.post)

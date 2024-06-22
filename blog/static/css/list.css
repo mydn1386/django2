@@ -9,6 +9,7 @@ body {
     flex-direction: column;
     align-items: center; /* قرار دادن محتوا به وسط */
     min-height: 100vh; /* حداقل ارتفاع صفحه */
+    font-family: 'IRANSans',"Roboto Light" ,  Arial, Helvetica, sans-serif;
 }
 
 h1 {
@@ -28,7 +29,6 @@ h2 {
     text-align: right; /* راست چین کردن عنوان */
     margin-bottom: 10px;
     position: relative;
-    right: 0; /* چسباندن به سمت راست */
 }
 
 h3 {
@@ -47,16 +47,15 @@ p {
 
 .post-container {
     background-color: #fff; /* رنگ پس زمینه بخش پست */
-    padding: 10px; /* حاشیه داخلی باکس */
-    margin: 30px 0; /* فاصله از بالا و پایین ۲۰ پیکسل */
-    border-radius: 8px;
+    padding: 20px; /* حاشیه داخلی باکس */
+    margin: 30px 0; /* فاصله از بالا و پایین ۳۰ پیکسل */
+    border-radius: 10px; /* گوشه های گرد باکس */
     box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* سایه */
     width: 400px; /* عرض ثابت برای باکس */
     transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
     display: flex;
     flex-direction: column;
     align-items: center; /* وسط چین کردن باکس */
-
 }
 
 .post-container:hover {
@@ -65,20 +64,19 @@ p {
 }
 
 img {
-    width: 250px; /* عرض 100% برای تصاویر داخل باکس */
+    width: 100%; /* عرض 100% برای تصاویر داخل باکس */
     height: auto; /* ارتفاع خودکار تصاویر */
     border-radius: 8px; /* گوشه های گرد تصاویر */
-    margin-bottom: 0; /* فاصله بین تصویر و توضیحات */
+    margin-bottom: 15px; /* فاصله بین تصویر و توضیحات */
 }
 
 .continue-box {
     text-align: center;
-    margin-right: 50px;
     margin-top: 15px;
     padding: 10px 20px; /* حاشیه داخلی باکس ادامه مطلب */
     background-color: #000; /* رنگ پس زمینه باکس ادامه مطلب */
     border-radius: 5px; /* گوشه گرد باکس */
-    width: 100px;
+    display: inline-block; /* تبدیل به بلاک داخلی */
 }
 
 .continue-link {
@@ -86,10 +84,8 @@ img {
     color: #fff; /* رنگ متن سفید */
     font-weight: bold;
     transition: color 0.3s;
-        width: 100px;
-
 }
 
 .continue-link:hover {
-    color: #333; /* تغییر رنگ هنگام هاور */
+    color: gray; /* تغییر رنگ هنگام هاور */
 }

@@ -1,5 +1,5 @@
 body {
-    background-color: #f4f4f4;
+    background-color: #eaeaea;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -7,6 +7,8 @@ body {
     min-height: 100vh;
     margin: 0;
     direction: rtl;
+    font-family: 'IRANSans',"Roboto Light" ,  Arial, Helvetica, sans-serif;
+    color: #333;
 }
 
 .container {
@@ -20,7 +22,7 @@ body {
 }
 
 .music-player, .sub {
-    background-color: white;
+    background-color: #fff;
     border-radius: 15px;
     width: 100%;
     overflow: hidden;
@@ -28,6 +30,7 @@ body {
     padding: 20px;
     margin-top: 20px;
     box-sizing: border-box;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .music-player img {
@@ -35,7 +38,7 @@ body {
     height: auto;
     border-bottom: 1px solid #ddd;
     margin-bottom: 15px;
-    border-radius: 15px;
+    border-radius: 15px 15px 0 0;
 }
 
 .music-player .details {
@@ -43,12 +46,12 @@ body {
 }
 
 .music-player .details h1 {
-    font-size: 1.2em;
-    margin: 5px 0;
+    font-size: 1.5em;
+    margin: 10px 0;
 }
 
 .music-player .details p {
-    font-size: 0.9em;
+    font-size: 1em;
     margin: 5px 0;
     color: #555;
 }
@@ -77,7 +80,7 @@ body {
     border: none;
     font-size: 1.5em;
     cursor: pointer;
-    color: #333;
+    color: black;
 }
 
 .music-player .controls button:focus {
@@ -107,7 +110,7 @@ body {
 
 .progress {
     height: 100%;
-    background: #007bff;
+    background: #800080;
     border-radius: 5px;
     width: 0;
 }
@@ -117,26 +120,32 @@ body {
     background-color: white;
     border-radius: 15px;
     width: 100%;
-    text-align: center; /* متن را وسط‌چین می‌کند */
+    text-align: center;
     padding: 20px;
     margin-top: 20px;
-    line-height: 1.4;
+    line-height: 1.6;
     word-wrap: break-word;
     hyphens: auto;
     overflow: visible;
     box-sizing: border-box;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .sub p {
-    margin: 5px 0;
+    margin: 10px 0;
 }
+
 /* General styles for the comment section */
 .comments, .comment-form {
-    background-color: #f7f7f7;
+    background-color: #fff;
     border: 1px solid #ddd;
-    border-radius: 8px;
+    border-radius: 15px;
     padding: 20px;
     margin-top: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 450px;
+    box-sizing: border-box;
 }
 
 .comments h2, .comment-form h2 {
@@ -144,61 +153,78 @@ body {
     margin-bottom: 20px;
     text-align: center;
     color: #333;
+    border-bottom: 2px solid #800080;
+    padding-bottom: 10px;
 }
 
 /* Comment item styles */
 .comment {
-    background-color: #fff;
+    background-color: #f9f9f9;
     border: 1px solid #ddd;
-    border-radius: 5px;
+    border-radius: 10px;
     padding: 15px;
     margin-bottom: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .comment p {
     margin: 5px 0;
+    line-height: 1.5;
+    color: #555;
 }
 
 /* Comment form styles */
 .custom-comment-form {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 15px;
 }
 
 .custom-comment-form p {
     margin-bottom: 10px;
+    color: #666;
+    font-size: 0.9em;
 }
 
+/* Improved input and textarea styles */
 .custom-comment-form input[type="text"],
 .custom-comment-form input[type="email"],
 .custom-comment-form textarea {
     width: 100%;
-    padding: 10px;
+    padding: 12px;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: 10px;
     font-size: 1em;
-    transition: border-color 0.3s;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    background-color: #fdfdfd;
+    box-sizing: border-box;
 }
 
 .custom-comment-form input[type="text"]:focus,
 .custom-comment-form input[type="email"]:focus,
 .custom-comment-form textarea:focus {
     border-color: #800080;
+    box-shadow: 0 0 8px rgba(128, 0, 128, 0.2);
+    outline: none;
+}
+
+.custom-comment-form textarea {
+    min-height: 100px;
+    resize: vertical;
 }
 
 .custom-comment-form button {
     background-color: #800080;
     color: white;
     border: none;
-    padding: 10px 20px;
+    padding: 12px 20px;
     font-size: 1em;
-    border-radius: 5px;
+    border-radius: 10px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, transform 0.2s;
 }
 
 .custom-comment-form button:hover {
     background-color: #660066;
+    transform: scale(1.05);
 }
-

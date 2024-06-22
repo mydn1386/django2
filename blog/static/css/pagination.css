@@ -4,6 +4,7 @@ body {
     margin: 0;
     padding: 0;
     background-color: #f0f0f0;
+    font-family: 'Arial', sans-serif; /* اضافه کردن فونت مدرن */
 }
 
 .container {
@@ -11,20 +12,27 @@ body {
     padding: 20px;
     background-color: white;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    margin: 50px auto auto;
+    margin: 50px auto;
     border-radius: 8px;
 }
 
 ul {
     list-style-type: none;
     padding: 0;
-
+    margin: 0; /* حذف فاصله اضافی */
 }
 
 li {
-    padding: 10px;
+    padding: 15px; /* افزایش فاصله داخلی */
     border-bottom: 1px solid #ddd;
-        margin: 30px;
+    margin: 10px 0; /* کاهش فاصله خارجی */
+    border-radius: 8px; /* گوشه‌های گرد */
+    background-color: #f9f9f9; /* رنگ پس زمینه لیست آیتم‌ها */
+    transition: background-color 0.3s ease;
+}
+
+li:hover {
+    background-color: #f0f0f0; /* تغییر رنگ هنگام هاور */
 }
 
 .pagination {
@@ -35,22 +43,24 @@ li {
 }
 
 .pagination a, .pagination span {
-    padding: 15px 20px;
-    margin: 0 5px 20px;
-    border: none;
+    padding: 10px 15px; /* کاهش اندازه پدینگ */
+    margin: 0 5px;
+    border: 1px solid #ddd; /* اضافه کردن حاشیه برای آیتم‌ها */
     background-color: white;
     cursor: pointer;
     border-radius: 5px;
     text-decoration: none;
     color: black;
+    transition: background-color 0.3s, color 0.3s; /* اضافه کردن افکت تغییر رنگ */
 }
 
 .pagination .current {
-    background-color: #000000;
+    background-color: #000;
     pointer-events: none;
     color: white;
+    border: 1px solid #000; /* اضافه کردن حاشیه هم‌رنگ به آیتم فعال */
 }
 
 .pagination a:hover {
-    background-color: #0056b3;
+    background-color: #ccc;
 }

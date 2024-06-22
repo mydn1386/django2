@@ -4,18 +4,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}عنوان صفحه{% endblock %}</title>
+    <title>{% block page_title %}Default Page Title{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/roboto-font@0.1.0/css/fonts.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-iranyekan@0.0.11/index.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/iransans-fontface@0.1.1/css/iransans/iransans-fontface.min.css">
     <style>
-body, h1, h2, h3, h4, h5, h6, p, a, span, div, li, ul, ol, button, input, textarea, select {
-    font-family: 'IRANSans', 'IranYekan', sans-serif;
-    font-weight: 400;
-    font-size: 16px;
-}
+        /* Apply default font to all elements */
+        * {
+            font-family: 'IRANSans', 'IranYekan', sans-serif;
+            font-weight: 400;
+            font-size: 16px;
+        }
     </style>
-    {% block head %}
-    <!-- محتوای head اضافی خاص این صفحه -->
+    {% block extra_head %}
+    <!-- Additional head content for specific pages -->
     {% endblock %}
 </head>
 
@@ -23,9 +25,9 @@ body, h1, h2, h3, h4, h5, h6, p, a, span, div, li, ul, ol, button, input, textar
     {% include 'blog/partials/header.html' %}
     {% include 'blog/partials/navigation.html' %}
 
-        {% block body %}
-        <!-- Main content of the page -->
-        {% endblock %}
+    {% block main_content %}
+    <!-- Main content of the page -->
+    {% endblock %}
 
     {% include 'blog/partials/footer.html' %}
     <!-- {% include 'blog/partials/pagination.html' %} -->
