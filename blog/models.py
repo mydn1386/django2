@@ -1,5 +1,5 @@
 from __future__ import unicode_literals
-
+from taggit.managers import TaggableManager
 from django.conf import settings
 from django.db import models
 from django.utils import timezone
@@ -25,6 +25,7 @@ class Post(models.Model):
     image_file = models.FileField(upload_to='image/', blank=True, null=True)
     singer = models.CharField(max_length=20, blank=True, null=True)
     sub = models.TextField(max_length=1000000, blank=True, null=True)
+    tags = TaggableManager()
 
     class Meta:
         ordering = ('-published',)

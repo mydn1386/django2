@@ -7,12 +7,20 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .forms import AccountForm, ContactUsForm, CommentForm
 from django.core.mail import send_mail
 from django.contrib import messages
+from taggit.models import Tag
 
 
-def postlist(request):
+def postlist(request, tag_slug=None):
     posts = Post.objects.filter(status='published')
-    paginator = Paginator(posts, 2)
+    tag = None
+
+    if tag_slug:
+        tag = get_object_or_404(Tag, slug=tag_slug)
+        posts = posts.filter(tags__in=[tag])
+
+    paginator = Paginator(posts, 2)  # Show 2 posts per page
     page = request.GET.get('page')
+
     try:
         posts = paginator.page(page)
     except PageNotAnInteger:
@@ -20,8 +28,13 @@ def postlist(request):
     except EmptyPage:
         posts = paginator.page(paginator.num_pages)
 
-    return render(request, 'blog/post/list.html', {'posts': posts, 'page': page})
+    context = {
+        'posts': posts,
+        'page': page,
+        'tag': tag
+    }
 
+    return render(request, 'blog/post/list.html', context)
 
 def index(request):
     return HttpResponse('سلام')
@@ -45,7 +58,7 @@ def postdetail(request, slug, pk, post=None):
         comment_form = CommentForm()
 
     return render(request, 'blog/post/detail.html',
-                  {'post': post, 'comments': comments, "new_comment": new_comment, 'comment_form': comment_form})
+                  {'post': post, 'comments': comments, "new_comment": new_comment, 'comment_form': comment_form,})
 
 
 def useraccount(request):
