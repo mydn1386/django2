@@ -73,10 +73,12 @@ img {
 
 .continue-box {
     text-align: center;
+    margin-right: 50px;
     margin-top: 15px;
     padding: 10px 20px; /* حاشیه داخلی باکس ادامه مطلب */
     background-color: #000; /* رنگ پس زمینه باکس ادامه مطلب */
     border-radius: 5px; /* گوشه گرد باکس */
+    width: 100px;
 }
 
 .continue-link {
@@ -84,6 +86,8 @@ img {
     color: #fff; /* رنگ متن سفید */
     font-weight: bold;
     transition: color 0.3s;
+        width: 100px;
+
 }
 
 .continue-link:hover {
