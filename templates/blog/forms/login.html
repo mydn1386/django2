@@ -1,0 +1,102 @@
+{% extends 'blog/parent/base.html' %}
+{% load static %}
+
+{% block head %}
+    <style>
+        body {
+            background-color: #fff; /* Background color */
+            color: #333; /* Text color */
+            font-family: Arial, sans-serif; /* Font family */
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center; /* Center horizontally */
+            align-items: center; /* Center vertically */
+            min-height: 100vh; /* Full viewport height */
+            padding: 20px;
+            {#background-color: #f7f7f7; /* Slightly off-white for subtle contrast */#}
+        }
+
+        .login-form {
+            background-color: #fff; /* Form background color */
+            padding: 40px; /* Increased form padding */
+            border: 1px solid #ddd; /* Lighter form border */
+            border-radius: 15px; /* More rounded corners */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Stronger box shadow for more depth */
+            max-width: 450px; /* Increased max width */
+            width: 100%; /* Full width within the container */
+            margin-bottom: 200px;
+        }
+
+        .login-input {
+            width: 100%; /* Full width for input fields */
+            margin-bottom: 20px; /* More space between fields */
+            padding: 15px; /* Increased input field padding */
+            border: 1px solid #ccc; /* Input border */
+            border-radius: 10px; /* More rounded input corners */
+            box-sizing: border-box; /* Include padding and border in element's total width and height */
+            font-size: 16px; /* Larger font size */
+        }
+
+        .login-button {
+            width: 100%; /* Full width for submit button */
+            padding: 15px; /* Increased button padding */
+            background-color: #4CAF50; /* Submit button background color */
+            color: white; /* Submit button text color */
+            border: none; /* Remove border */
+            border-radius: 10px; /* More rounded button corners */
+            cursor: pointer; /* Pointer cursor on hover */
+            font-size: 18px; /* Larger font size */
+            transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+        }
+
+        .login-button:hover {
+            background-color: #45a049; /* Darker green on hover */
+        }
+
+        .form-title {
+            font-size: 24px; /* Larger title font size */
+            margin-bottom: 20px; /* Space below the title */
+            text-align: center; /* Centered title text */
+            color: #4CAF50; /* Title color */
+        }
+    </style>
+    <meta charset="UTF-8">
+    {% block title %}
+        Login
+    {% endblock %}
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <form method="post" class="login-form">
+{#            {% for message in messages %}#}
+{#                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>#}
+{#            {% endfor %}#}
+                {% csrf_token %}
+                <div class="form-title">ورود به حساب کاربری</div>
+                <input type="text" name="username" class="login-input" placeholder="نام کاربری" required>
+                <input type="password" name="password" class="login-input" placeholder="رمز عبور" required>
+                <input type="submit" name="submit" class="login-button" value="ثبت">
+        </form>
+    </div>
+        {% if form.errors %}
+        <div class="errors">
+            خطا را اصلاح کنید
+            <br>
+            {% for field in form %}
+                {% if field.errors %}
+                    {% for error in field.errors %}
+                        <p>{{ field.label }}: {{ error }}</p>
+                    {% endfor %}
+                {% endif %}
+            {% endfor %}
+        {% if form.non_field_errors %}
+            {{ form.non_field_errors }}
+        {% endif %}
+        </div>
+    {% endif %}
+{% endblock %}

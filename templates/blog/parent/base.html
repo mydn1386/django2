@@ -4,10 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block page_title %}Default Page Title{% endblock %}</title>
+    <title>{% block title %}عنوان صفحه{% endblock %}</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/roboto-font@0.1.0/css/fonts.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-iranyekan@0.0.11/index.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/iransans-fontface@0.1.1/css/iransans/iransans-fontface.min.css">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
     <style>
         /* Apply default font to all elements */
         * {
@@ -16,20 +17,21 @@
             font-size: 16px;
         }
     </style>
-    {% block extra_head %}
+    {% block head %}
     <!-- Additional head content for specific pages -->
     {% endblock %}
 </head>
-
 <body>
     {% include 'blog/partials/header.html' %}
     {% include 'blog/partials/navigation.html' %}
-
-    {% block main_content %}
-    <!-- Main content of the page -->
-    {% endblock %}
-
+    <main>
+        {% block body %}
+        <!-- Main content of the page -->
+        {% endblock %}
+    </main>
     {% include 'blog/partials/footer.html' %}
-    <!-- {% include 'blog/partials/pagination.html' %} -->
+    {% block scripts %}
+    <!-- Additional scripts for specific pages -->
+    {% endblock %}
 </body>
 </html>

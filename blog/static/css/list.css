@@ -9,16 +9,19 @@ body {
     flex-direction: column;
     align-items: center; /* قرار دادن محتوا به وسط */
     min-height: 100vh; /* حداقل ارتفاع صفحه */
-    font-family: 'IRANSans',"Roboto Light" ,  Arial, Helvetica, sans-serif;
+    font-family: 'IRANSans', "Roboto Light", Arial, Helvetica, sans-serif;
 }
 
 h1 {
     text-align: right; /* چسباندن متن عنوان به سمت راست */
-    color: black; /* رنگ عنوان اصلی */
+    color: #020e73; /* رنگ عنوان اصلی */
     margin-bottom: 20px;
     font-size: 2em;
     width: 100%; /* استفاده از کل عرض صفحه */
+    float: right; /* افزودن خاصیت float برای چسباندن به سمت راست */
+
 }
+
 
 h2, h3 {
     color: #2c3e50; /* رنگ عنوان فرعی */
@@ -50,8 +53,9 @@ p {
     padding: 20px; /* حاشیه داخلی باکس */
     margin: 30px 0; /* فاصله از بالا و پایین ۳۰ پیکسل */
     border-radius: 10px; /* گوشه های گرد باکس */
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* سایه */
-    width: 400px; /* عرض ثابت برای باکس */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* سایه */
+    width: 100%;
+    max-width: 400px; /* عرض ثابت برای باکس */
     transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
     display: flex;
     flex-direction: column;
@@ -60,7 +64,7 @@ p {
 
 .post-container:hover {
     transform: translateY(-5px); /* حرکت به بالا هنگام هاور */
-    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
 img {
@@ -88,4 +92,15 @@ img {
 
 .continue-link:hover {
     color: gray; /* تغییر رنگ هنگام هاور */
+}
+
+/* بهبود کلی استایل‌ها برای تطبیق بهتر با اندازه‌های مختلف صفحه نمایش */
+@media (max-width: 768px) {
+    body {
+        padding: 20px;
+    }
+
+    .post-container {
+        width: 90%;
+    }
 }

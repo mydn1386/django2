@@ -61,3 +61,14 @@ class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = ('Comment', 'name',)
+
+
+class LoginForm(forms.Form):
+    username = forms.CharField(label='نام کاربری')
+    password = forms.CharField(label='رمز عبور', widget=forms.PasswordInput)
+
+
+class ChangePasswordForm(forms.Form):
+    old_password = forms.CharField(label='رمز قدیمی', widget=forms.PasswordInput)
+    new_password1 = forms.CharField(label='رمز جدید', widget=forms.PasswordInput)
+    new_password2 = forms.CharField(label='تکرار رمز جدید', widget=forms.PasswordInput)

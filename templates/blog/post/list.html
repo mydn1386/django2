@@ -1,4 +1,4 @@
-{% extends 'blog/parent/base.html' %}
+{#{% extends 'blog/parent/base.html' %}#}
 {% load static %}
 {% block head %}
     <meta charset="UTF-8">
@@ -6,8 +6,12 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/list.css' %}">
 {% endblock %}
 {% block body %}
+    {% include 'blog/partials/navigation.html' %}
     <h1>لیست آهنگ ها</h1>
     <div>
+        {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
         {% if tag %}
             پست ها بر اساس تگ {{ tag.name }} فیلتر شده اند
         {% endif %}

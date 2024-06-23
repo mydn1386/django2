@@ -9,6 +9,9 @@ urlpatterns = [
     path('postlist/<slug:tag_slug>/', views.postlist, name="post_list_tag"),
     path('postlist/', views.postlist, name="post_list"),
     path('account-form/', views.useraccount, name="user-account"),
+    path('login/', views.user_login, name="login"),
+    path('logout/', views.logout, name="logout"),
+    path('change-password', views.change_password, name="change-password"),
     path('contact-us/', views.contactus, name="contact-us"),
     path('search/', views.search, name="search"),
 ]

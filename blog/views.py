@@ -1,14 +1,16 @@
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import PasswordChangeForm
 from django.views.generic import ListView
 from .models import Post, Account, Comment
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
-from .forms import AccountForm, ContactUsForm, CommentForm
+from .forms import AccountForm, ContactUsForm, CommentForm, LoginForm
 from django.core.mail import send_mail
 from django.contrib import messages
 from taggit.models import Tag
 from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank, TrigramSimilarity
+from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth.decorators import login_required
 
 
 def postlist(request, tag_slug=None):
@@ -144,3 +146,60 @@ def search(request, tag_slug=None):
     }
 
     return render(request, 'blog/post/list.html', context)
+
+
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import PasswordChangeForm
+from django.shortcuts import render, redirect
+from django.http import HttpResponse
+from django.contrib import messages
+
+def user_login(request):
+    if request.method == "POST":
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            cd = form.cleaned_data
+            user = authenticate(request, username=cd['username'], password=cd['password'])
+            if user is not None:
+                if user.is_active:
+                    login(request, user)
+                    messages.success(request, 'شما با موفقیت وارد شدید')
+                    return redirect('blog:post_list')
+                else:
+                    messages.error(request, 'حساب کاربری شما غیرفعال است')
+            else:
+                messages.error(request, 'نام کاربری یا رمز عبور اشتباه است')
+    else:
+        form = LoginForm()
+    return render(request, 'blog/forms/login.html', {'form': form})
+
+@login_required(login_url='blog:login')
+def user_logout(request):
+    logout(request)
+    messages.success(request, 'شما با موفقیت خارج شدید')
+    return redirect('blog:post_list')
+
+@login_required(login_url="blog:login")
+def change_password(request):
+    if request.method == 'POST':
+        user = request.user
+        form = PasswordChangeForm(user=request.user, data=request.POST)
+        if form.is_valid():
+            cd = form.cleaned_data
+            old_password = cd['old_password']
+            new_password1 = cd['new_password1']
+            new_password2 = cd['new_password2']
+            if not user.check_password(old_password):
+                return HttpResponse('رمز عبور فعلی اشتباه است')
+
+            elif new_password1 != new_password2:
+                messages.error(request, 'رمز عبور جدید با تکرار آن یکسان نیست')
+            else:
+                user.set_password(new_password1)
+                user.save()
+                messages.success(request, 'رمز عبور با موفقیت تغییر یافت')
+                return redirect('blog:post_list')
+    else:
+        form = PasswordChangeForm(user=request.user)
+    return render(request, 'blog/forms/change-password.html', {'form': form})
