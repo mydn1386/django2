@@ -73,9 +73,9 @@
 {% block body %}
     <div class="container">
         <form method="post" class="login-form">
-{#            {% for message in messages %}#}
-{#                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>#}
-{#            {% endfor %}#}
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
                 {% csrf_token %}
                 <div class="form-title">ورود به حساب کاربری</div>
                 <input type="text" name="username" class="login-input" placeholder="نام کاربری" required>

@@ -77,10 +77,10 @@
                 <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
         {% endfor %}
             {% csrf_token %}
-            <div class="form-title">عوض کردن رمز عبور</div>
-            <input type="password" name="old_password" class="login-input" placeholder="رمز عبور فعلی" required>
-            <input type="password" name="new_password1" class="login-input" placeholder="رمز عبور جدید" required>
-            <input type="password" name="new_password2" class="login-input" placeholder="تکرار رمز عبور " required>
+            <div class="form-title">ثبت نام</div>
+            <input type="text" name="username" class="login-input" placeholder="نام کاربری" required>
+            <input type="password" name="password1" class="login-input" placeholder="رمزعبور" required>
+            <input type="password" name="password2" class="login-input" placeholder="تکرار رمز عبور " required>
 
             <input type="submit" name="submit" class="login-button" value="ثبت">
         </form>

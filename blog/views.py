@@ -1,10 +1,10 @@
-from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth.forms import PasswordChangeForm, UserCreationForm
 from django.views.generic import ListView
 from .models import Post, Account, Comment
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
-from .forms import AccountForm, ContactUsForm, CommentForm, LoginForm
+from .forms import AccountForm, ContactUsForm, CommentForm, LoginForm, RegisterForm
 from django.core.mail import send_mail
 from django.contrib import messages
 from taggit.models import Tag
@@ -148,13 +148,6 @@ def search(request, tag_slug=None):
     return render(request, 'blog/post/list.html', context)
 
 
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import PasswordChangeForm
-from django.shortcuts import render, redirect
-from django.http import HttpResponse
-from django.contrib import messages
-
 def user_login(request):
     if request.method == "POST":
         form = LoginForm(request.POST)
@@ -203,3 +196,22 @@ def change_password(request):
     else:
         form = PasswordChangeForm(user=request.user)
     return render(request, 'blog/forms/change-password.html', {'form': form})
+
+
+def register(request):
+    if request.method == "POST":
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+                messages.success(request, 'ثبت نام با موفقیت انجام شد')
+                return redirect('blog:post_list')
+            else:
+                messages.error(request, 'خطایی در فرآیند ثبت نام رخ داده است. لطفاً دوباره تلاش کنید.')
+    else:
+        form = RegisterForm()
+    return render(request, 'blog/forms/register.html', {'form': form})
