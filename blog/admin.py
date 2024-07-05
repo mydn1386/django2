@@ -6,7 +6,7 @@
 # actions = [delete_selected]
 
 from django.contrib import admin
-from .models import Post, Account, Comment
+from .models import Post, Account, Comment, Category,Like
 
 
 @admin.register(Post)
@@ -46,9 +46,25 @@ class AccountAdmin(admin.ModelAdmin):
 
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ('username', 'post', 'published', 'created','name')
+    list_display = ('username', 'post', 'published', 'created', 'name')
     list_filter = ('published', 'created',)
     list_editable = ('published',)
+
+    def username(self, obj):
+        return obj.user.username
+
+    username.short_description = 'Username'
+
+
+@admin.register(Category)
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ('Category_Name', 'slug')
+    prepopulated_fields = {'slug': ('Category_Name',)}
+
+@admin.register(Like)
+class LikeAdmin(admin.ModelAdmin):
+    list_display = ('username', 'post', 'created')
+    list_filter = ('created',)
 
     def username(self, obj):
         return obj.user.username

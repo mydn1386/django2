@@ -15,19 +15,20 @@
             <div class="details">
                 <h1>{{ post.title }}</h1>
                 <p>{{ post.singer }}</p>
-                <button id="shareButton" data-post-id="{{ post.id }}" data-post-slug="{{ post.slug }}"><i class="fab fa-telegram"></i></button>
+                <i class="fab fa-telegram" id="shareButton" data-post-id="{{ post.id }}" data-post-slug="{{ post.slug }}"></i>
+                <i id="likeBtn" class="{% if user_has_liked %}fas{% else %}far{% endif %} fa-heart" data-post-id="{{ post.id }}" style="cursor: pointer;"></i>
+                <span id="likesCount">{{ post.likes.count }}</span>
 
                 <div class="audio-player">
                     <audio id="audioPlayer" preload="auto">
                         <source src="{{ post.music_file.url }}" type='audio/ogg; codecs="vorbis"'>
-                        <source src="{{ post.music_file.url }}" type="audio/mpeg" >
+                        <source src="{{ post.music_file.url }}" type="audio/mpeg">
                         <source src="{{ post.music_file.url }}" type="audio/wav">
-
                         مرورگر شما از تگ audio پشتیبانی نمی‌کند.
                     </audio>
-                        <a href="{{ post.music_file.url }}" target="_blank">
-                            <span>اهنگ را دانلود کنید</span>
-                        </a>
+                    <a href="{{ post.music_file.url }}" target="_blank">
+                        <span>اهنگ را دانلود کنید</span>
+                    </a>
                     <div class="progress-container">
                         <span class="progress-time" id="currentTime">0:00</span>
                         <div class="progress-bar" id="progressBar">
@@ -71,4 +72,5 @@
     </section>
 
     <script src="{% static 'js/music-player.js' %}"></script>
+
 {% endblock %}

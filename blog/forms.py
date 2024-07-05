@@ -121,13 +121,15 @@ class RegisterForm(forms.Form):
             self.add_error('password', 'رمز عبور باید حداقل یک حرف بزرگ داشته باشد')
         if password and not any(char.islower() for char in password):
             self.add_error('password', 'رمز عبور باید حداقل یک حرف کوچک داشته باشد')
-        return cleaned_data
-
-    def clean_username(self):
-        username = self.cleaned_data.get('username')
         if User.objects.filter(username=username).exists():
             self.add_error('username', 'نام کاربری تکراری است')
-        return username
+        return cleaned_data
+
+    # def clean_username(self):
+    #     username = self.cleaned_data.get('username')
+    #     if User.objects.filter(username=username).exists():
+    #         self.add_error('username', 'نام کاربری تکراری است')
+    #     return username
 
     def save(self, commit=True):
         user = User.objects.create_user(

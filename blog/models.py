@@ -6,7 +6,12 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from django.urls import reverse
 
+class Category(models.Model):
+    Category_Name = models.CharField(max_length=100, unique=True)
+    slug = models.SlugField(max_length=100, unique=True)
 
+    def __str__(self):
+        return self.Category_Name
 class Post(models.Model):
     STATUS_CHOICES = (
         ('draft', "Draft"),
@@ -25,7 +30,8 @@ class Post(models.Model):
     image_file = models.FileField(upload_to='image/', blank=True, null=True)
     singer = models.CharField(max_length=20, blank=True, null=True)
     sub = models.TextField(max_length=1000000, blank=True, null=True)
-    tags = TaggableManager()
+    tags = TaggableManager(blank=True,)
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, related_name='post_set')
 
     class Meta:
         ordering = ('-published',)
@@ -71,3 +77,13 @@ class Comment(models.Model):
 
     def __str__(self):
         return "Commented by {0} on {1}".format(self.user.username, self.post)
+
+
+class Like(models.Model):
+    post = models.ForeignKey(Post, related_name='likes', on_delete=models.CASCADE)
+    user = models.ForeignKey(User, related_name='likes', on_delete=models.CASCADE)
+    created = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('post', 'user')
+

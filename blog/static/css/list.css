@@ -1,10 +1,9 @@
 body {
     direction: rtl; /* تنظیم جهت متن به سمت راست */
     line-height: 1.6;
-    background-color: #f9f9f9; /* رنگ پس زمینه اصلی */
+    background-color: #eaeaea;
     color: #333; /* رنگ متن اصلی */
     margin: 0;
-    padding: 30px 40px 20px 40px; /* فاصله از بالا، راست، پایین، چپ (20px از هر طرف اضافه شده است) */
     display: flex;
     flex-direction: column;
     align-items: center; /* قرار دادن محتوا به وسط */
@@ -49,7 +48,7 @@ p {
 }
 
 .post-container {
-    background-color: #fff; /* رنگ پس زمینه بخش پست */
+    background-color: white; /* رنگ پس زمینه بخش پست */
     padding: 20px; /* حاشیه داخلی باکس */
     margin: 30px 0; /* فاصله از بالا و پایین ۳۰ پیکسل */
     border-radius: 10px; /* گوشه های گرد باکس */
@@ -77,12 +76,18 @@ img {
 .continue-box {
     text-align: center;
     margin-top: 15px;
-    padding: 10px 20px; /* حاشیه داخلی باکس ادامه مطلب */
-    background-color: #000; /* رنگ پس زمینه باکس ادامه مطلب */
-    border-radius: 5px; /* گوشه گرد باکس */
-    display: inline-block; /* تبدیل به بلاک داخلی */
-}
+    padding: 10px 20px;
+    background-color: #000;
+    border-radius: 5px;
+    position: relative;
+    right: 100px ;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
+    width: 150px;
+    height: 40px; /* Adjust height as needed */
+}
 .continue-link {
     text-decoration: none;
     color: #fff; /* رنگ متن سفید */
@@ -103,4 +108,44 @@ img {
     .post-container {
         width: 90%;
     }
+}
+.categories-box {
+    background-color: #f5f5f5;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+     width: 400px;
+    position: absolute;
+    top: 200px;
+    left: 20px;
+    /* جدید */
+    /*background-color: #dcdcdc;*/
+    color: #333;
+    transition: color 0.3s;
+}
+
+.categories-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;background-color: #cccccc;
+    height: 60px;
+    border-radius:10px ;
+}
+
+.categories-list li {
+
+    font-size: 24px;
+    text-align: center;
+
+
+}
+
+.categories-list a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+    transition: color 0.3s;
+    position: relative;
+    top: 15px;
+
 }

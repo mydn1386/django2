@@ -234,3 +234,12 @@ body {
     background-color: #660066;
     transform: scale(1.05);
 }
+.far.fa-heart {
+    color: black; /* رنگ پیش فرض */
+    cursor: pointer;
+}
+
+.fas.fa-heart {
+    color: red; /* رنگ بعد از لایک */
+    cursor: pointer;
+}

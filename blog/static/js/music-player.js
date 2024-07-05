@@ -9,59 +9,106 @@ document.addEventListener("DOMContentLoaded", function() {
     var forwardButton = document.getElementById('forwardButton');
     var shareButton = document.getElementById('shareButton');
 
-    playPauseBtn.addEventListener('click', function() {
-        if (audioPlayer.paused || audioPlayer.ended) {
-            audioPlayer.play();
-            playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
-        } else {
-            audioPlayer.pause();
-            playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
-        }
-    });
+    function initializePlayer() {
+        playPauseBtn.addEventListener('click', function() {
+            if (audioPlayer.paused || audioPlayer.ended) {
+                audioPlayer.play();
+                playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+            } else {
+                audioPlayer.pause();
+                playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+            }
+        });
 
-    backwardButton.addEventListener('click', function() {
-        if (audioPlayer.readyState >= 3) {
-            audioPlayer.currentTime = Math.max(0, audioPlayer.currentTime - 5);
-        }
-    });
+        backwardButton.addEventListener('click', function() {
+            if (audioPlayer.seekable.length > 0) {
+                audioPlayer.currentTime = Math.max(0, audioPlayer.currentTime - 5);
+            }
+        });
 
-    forwardButton.addEventListener('click', function() {
-        if (audioPlayer.readyState >= 3) {
-            audioPlayer.currentTime = Math.min(audioPlayer.duration, audioPlayer.currentTime + 5);
-        }
-    });
+        forwardButton.addEventListener('click', function() {
+            if (audioPlayer.seekable.length > 0) {
+                audioPlayer.currentTime = Math.min(audioPlayer.duration, audioPlayer.currentTime + 5);
+            }
+        });
 
-    audioPlayer.addEventListener('timeupdate', function() {
-        if (audioPlayer.readyState >= 3) {
-            var percent = (audioPlayer.currentTime / audioPlayer.duration) * 100;
-            progress.style.width = percent + '%';
-            currentTimeElem.textContent = formatTime(audioPlayer.currentTime);
-        }
-    });
+        audioPlayer.addEventListener('timeupdate', function() {
+            if (audioPlayer.seekable.length > 0) {
+                var percent = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+                progress.style.width = percent + '%';
+                currentTimeElem.textContent = formatTime(audioPlayer.currentTime);
+            }
+        });
 
-    audioPlayer.addEventListener('loadedmetadata', function() {
-        durationTimeElem.textContent = formatTime(audioPlayer.duration);
-    });
+        audioPlayer.addEventListener('loadedmetadata', function() {
+            durationTimeElem.textContent = formatTime(audioPlayer.duration);
+        });
 
-    progressBar.addEventListener('click', function(event) {
-        if (audioPlayer.readyState >= 3) {
-            var percent = (event.offsetX / progressBar.offsetWidth);
-            audioPlayer.currentTime = percent * audioPlayer.duration;
-        }
-    });
+        progressBar.addEventListener('click', function(event) {
+            if (audioPlayer.seekable.length > 0) {
+                var percent = (event.offsetX / progressBar.offsetWidth);
+                var newTime = percent * audioPlayer.duration;
+                // Check if the new time is within the seekable range
+                for (var i = 0; i < audioPlayer.seekable.length; i++) {
+                    if (newTime >= audioPlayer.seekable.start(i) && newTime <= audioPlayer.seekable.end(i)) {
+                        audioPlayer.currentTime = newTime;
+                        break;
+                    }
+                }
+            }
+        });
 
-    function formatTime(seconds) {
-        var minutes = Math.floor(seconds / 60);
-        var seconds = Math.floor(seconds % 60);
-        if (seconds < 10) {
-            seconds = '0' + seconds;
+        function formatTime(seconds) {
+            var minutes = Math.floor(seconds / 60);
+            var seconds = Math.floor(seconds % 60);
+            if (seconds < 10) {
+                seconds = '0' + seconds;
+            }
+            return minutes + ':' + seconds;
         }
-        return minutes + ':' + seconds;
+
+        shareButton.addEventListener('click', function() {
+            var url = window.location.href;
+            var telegramUrl = 'https://t.me/share/url?url=' + encodeURIComponent(url);
+            window.open(telegramUrl, '_blank');
+        });
     }
 
-    shareButton.addEventListener('click', function() {
-        var url = window.location.href;
-        var telegramUrl = 'https://t.me/share/url?url=' + encodeURIComponent(url);
-        window.open(telegramUrl, '_blank');
+    audioPlayer.addEventListener('canplay', function() {
+        initializePlayer();
+    });
+
+    // Initialize the player as soon as there's enough data to play
+    if (audioPlayer.readyState >= 2) {
+        initializePlayer();
+    }
+
+    document.getElementById('likeBtn').addEventListener('click', function() {
+        var btn = this;
+        var postId = btn.getAttribute('data-post-id');
+        fetch(`/like/${postId}/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.liked) {
+                btn.classList.remove('far');
+                btn.classList.add('fas');
+            } else {
+                btn.classList.remove('fas');
+                btn.classList.add('far');
+            }
+            document.getElementById('likesCount').innerText = data.likes_count;
+        })
+        .catch(error => console.error('Error:', error));
     });
 });
