@@ -34,9 +34,9 @@
                     </div>
                 </div>
                 <div class="controls">
-                    <button id="backwardButton"><i class="fas fa-forward"></i></button>
+                    <button id="forwardButton"><i class="fas fa-forward"></i></button>
                     <button id="playPauseBtn"><i class="fas fa-play"></i></button>
-                    <button id="forwardButton"><i class="fas fa-backward"></i></button>
+                    <button id="backwardButton"><i class="fas fa-backward"></i></button>
                 </div>
             </div>
         </div>
@@ -74,10 +74,100 @@
     </section>
 
     <!-- Include JavaScript -->
- <script>
-     alert('hello world')
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    // انتخاب عناصر لازم
+    const audioPlayer = document.getElementById('audioPlayer');
+    const progress = document.getElementById('progress');
+    const progressBar = document.getElementById('progressBar');
+    const currentTimeElem = document.getElementById('currentTime');
+    const durationTimeElem = document.getElementById('durationTime');
+    const playPauseBtn = document.getElementById('playPauseBtn');
+    const backwardButton = document.getElementById('backwardButton');
+    const forwardButton = document.getElementById('forwardButton');
+    const shareButton = document.getElementById('shareButton');
+    // متغیری برای ردیابی وضعیت پخش
+    let isPlaying = false;
+
+    // اگر audioPlayer وجود داشته باشد، رویدادها را اضافه کن
+    if (audioPlayer) {
+        // به روز رسانی نوار پیشرفت هنگام تغییر زمان
+        audioPlayer.addEventListener('timeupdate', function() {
+            let percent = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+            progress.style.width = percent + '%';
+            currentTimeElem.textContent = formatTime(audioPlayer.currentTime);
+        });
+
+        // تعیین زمان Duration وقتی متاداده ها بارگیری شدند
+        audioPlayer.addEventListener('loadedmetadata', function() {
+            durationTimeElem.textContent = formatTime(audioPlayer.duration);
+            console.log("Duration loaded: " + audioPlayer.duration);
+        });
+
+        // دکمه پخش/مکث
+        playPauseBtn.addEventListener('click', function() {
+            if (audioPlayer.paused || audioPlayer.ended) {
+                audioPlayer.play();
+                playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+                isPlaying = true;
+            } else {
+                audioPlayer.pause();
+                playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+                isPlaying = false;
+            }
+        });
+
+        // رویداد canplay
+        audioPlayer.oncanplay = function (){
+            playPauseBtn.disabled = false; // فعال‌سازی دکمه پخش/مکث
+            alert("Audio can be played");
+        };
+        // رویداد loadeddata
+        audioPlayer.addEventListener('loadeddata', function() {
+            console.log("Audio data is loaded");
+        });
 
 
+
+        // کلیک بر روی نوار پیشرفت برای جستجو
+        progressBar.addEventListener('click', function(event) {
+            const percent = (event.offsetX / progressBar.offsetWidth);
+            audioPlayer.currentTime = percent * audioPlayer.duration;
+        });
+
+        // دکمه عقب برای جستجو به عقب
+        forwardButton.addEventListener('click', function() {
+            const newTime = audioPlayer.currentTime + 5; // به عقب 5 ثانیه
+            audioPlayer.currentTime = newTime <= audioPlayer.duration ? newTime : audioPlayer.duration; // اطمینان از این که بیشتر از طول آهنگ نشود
+
+        });
+
+        // دکمه جلو برای جستجو به جلو
+        backwardButton.addEventListener('click', function() {
+            const newTime = audioPlayer.currentTime - 5; // به جلو 5 ثانیه
+             audioPlayer.currentTime = newTime >= 0 ? newTime : 0; // اطمینان از این که کمتر از 0 نشود
+        });
+
+        // دکمه اشتراک‌گذاری برای باز کردن لینک اشتراک‌گذاری تلگرام
+        if (shareButton) {
+            shareButton.addEventListener('click', function() {
+                const url = window.location.href;
+                const telegramUrl = 'https://t.me/share/url?url=' + encodeURIComponent(url);
+                window.open(telegramUrl, '_blank');
+            });
+        }
+
+        // تابع فرمت زمان
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            seconds = Math.floor(seconds % 60);
+            if (seconds < 10) {
+                seconds = '0' + seconds;
+            }
+            return minutes + ':' + seconds;
+        }
+    }
+});
 </script>
 </body>
 </html>
