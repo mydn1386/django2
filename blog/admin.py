@@ -1,13 +1,5 @@
-# actions = [delete_selected]
-# @admin.action(description='حذف انتخاب شده‌ها')
-# def delete_selected(modeladmin, request, queryset):
-#     queryset.delete()
-
-# actions = [delete_selected]
-
 from django.contrib import admin
-from .models import Post, Account, Comment, Category,Like
-
+from .models import Post, Account, Comment, Category
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
@@ -20,7 +12,6 @@ class PostAdmin(admin.ModelAdmin):
     list_editable = ('status',)
     prepopulated_fields = {'slug': ('title',)}
     list_display_links = ('slug', 'title',)
-
 
 @admin.register(Account)
 class AccountAdmin(admin.ModelAdmin):
@@ -41,13 +32,11 @@ class AccountAdmin(admin.ModelAdmin):
         return obj.user.last_name
 
     user_last_name.short_description = 'Last Name'
-    # test
-
 
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
     list_display = ('username', 'post', 'published', 'created', 'name')
-    list_filter = ('published', 'created',)
+    list_filter = ('published', 'created')
     list_editable = ('published',)
 
     def username(self, obj):
@@ -55,18 +44,8 @@ class CommentAdmin(admin.ModelAdmin):
 
     username.short_description = 'Username'
 
-
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('Category_Name', 'slug')
     prepopulated_fields = {'slug': ('Category_Name',)}
 
-@admin.register(Like)
-class LikeAdmin(admin.ModelAdmin):
-    list_display = ('username', 'post', 'created')
-    list_filter = ('created',)
-
-    def username(self, obj):
-        return obj.user.username
-
-    username.short_description = 'Username'

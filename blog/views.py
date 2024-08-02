@@ -1,6 +1,6 @@
 from django.contrib.auth.forms import PasswordChangeForm, UserCreationForm
 from django.views.generic import ListView
-from .models import Post, Account, Comment, Category, Like
+from .models import Post, Account, Comment, Category
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
@@ -11,6 +11,8 @@ from taggit.models import Tag
 from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank, TrigramSimilarity
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST
+
 
 def postlist(request, tag_slug=None, category_slug=None):
     category = None
@@ -46,8 +48,10 @@ def postlist(request, tag_slug=None, category_slug=None):
 
     return render(request, 'blog/post/list.html', context)
 
+
 def index(request):
     return HttpResponse('سلام')
+
 
 def postdetail(request, slug, pk, post=None):
     if post is None:
@@ -66,17 +70,14 @@ def postdetail(request, slug, pk, post=None):
     else:
         comment_form = CommentForm()
 
-    user_has_liked = False
-    if request.user.is_authenticated:
-        user_has_liked = post.likes.filter(user=request.user).exists()
 
     return render(request, 'blog/post/detail.html', {
         'post': post,
         'comments': comments,
         "new_comment": new_comment,
         'comment_form': comment_form,
-        'user_has_liked': user_has_liked
     })
+
 
 def useraccount(request):
     user = request.user
@@ -105,6 +106,7 @@ def useraccount(request):
                      'address': account.address, 'birth': account.birth})
     return render(request, 'blog/forms/accountform.html', {'form': form, 'account': account})
 
+
 def contactus(request):
     if request.method == 'POST':
         form = ContactUsForm(request.POST)
@@ -115,12 +117,14 @@ def contactus(request):
             subject = cd['subject']
             message = cd['message']
             phone = cd['phone']
-            msg = 'نام: {0}\nموضوع: {2}\nشماره تماس: {3}\nایمیل: {1}\nپیام: {4}'.format(name, email, subject, phone, message)
+            msg = 'نام: {0}\nموضوع: {2}\nشماره تماس: {3}\nایمیل: {1}\nپیام: {4}'.format(name, email, subject, phone,
+                                                                                        message)
             send_mail(subject, msg, 'yasin.danesh@outlook.com', ['yasin.danesh@outlook.com'], fail_silently=False)
             return redirect('blog:post_list')
     else:
         form = ContactUsForm()
     return render(request, 'blog/forms/Contact-Us.html', {'form': form})
+
 
 def search(request, tag_slug=None):
     query_name = request.POST.get('search_input') if request.method == "POST" else None
@@ -157,6 +161,7 @@ def search(request, tag_slug=None):
 
     return render(request, 'blog/post/list.html', context)
 
+
 def user_login(request):
     if request.method == "POST":
         form = LoginForm(request.POST)
@@ -176,11 +181,13 @@ def user_login(request):
         form = LoginForm()
     return render(request, 'blog/forms/login.html', {'form': form})
 
+
 @login_required(login_url='blog:login')
 def user_logout(request):
     logout(request)
     messages.success(request, 'شما با موفقیت خارج شدید')
     return redirect('blog:post_list')
+
 
 @login_required(login_url="blog:login")
 def change_password(request):
@@ -206,6 +213,7 @@ def change_password(request):
         form = PasswordChangeForm(user=request.user)
     return render(request, 'blog/forms/change-password.html', {'form': form})
 
+
 def register(request):
     if request.method == "POST":
         form = RegisterForm(request.POST)
@@ -224,16 +232,4 @@ def register(request):
         form = RegisterForm()
     return render(request, 'blog/forms/register.html', {'form': form})
 
-@login_required
-def like_post(request, post_id):
-    post = get_object_or_404(Post, id=post_id)
-    user = request.user
 
-    if Like.objects.filter(post=post, user=user).exists():
-        Like.objects.get(post=post, user=user).delete()
-        liked = False
-    else:
-        Like.objects.create(post=post, user=user)
-        liked = True
-
-    return JsonResponse({'liked': liked, 'likes_count': post.likes.count()})
