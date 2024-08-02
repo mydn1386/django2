@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-7m45eqdt2*^3+_1f1u0^44+cgwauiog9-hjb9&@_@+!i)qf_u8
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = []
 
 # Application definition
 
@@ -88,13 +88,8 @@ WSGI_APPLICATION = 'djangoProject5.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'MusicPlayer',
-        'USER': 'postgres',
-        'PORT': '5432',
-        "HOST": "127.0.0.1",
-        'PASSWORD': '1745233024d',
-
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
