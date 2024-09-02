@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", function() {
     const audioPlayer = document.getElementById('audioPlayer');
     const progress = document.getElementById('progress');
+    const bufferedBar = document.getElementById('buffered'); // نوار بافر
     const currentTimeElem = document.getElementById('currentTime');
     const durationTimeElem = document.getElementById('durationTime');
     const playPauseBtn = document.getElementById('playPauseBtn');
@@ -21,8 +22,17 @@ document.addEventListener("DOMContentLoaded", function() {
         currentTimeElem.textContent = formatTime(audioPlayer.currentTime);
     };
 
+    // برای به‌روزرسانی نوار بافر
+    const updateBuffered = () => {
+        const buffered = audioPlayer.buffered;
+        if (buffered.length > 0) {
+            const bufferedEnd = buffered.end(buffered.length - 1);
+            const percentBuffered = (bufferedEnd / audioPlayer.duration) * 100;
+            bufferedBar.style.width = isNaN(percentBuffered) ? '0%' : percentBuffered + '%';
+        }
+    };
+
     const setAudioCurrentTime = (changeInSeconds) => {
-        // فقط زمانی که موزیک بارگذاری شده است و آماده است
         if (isReady) {
             audioPlayer.currentTime = Math.min(Math.max(0, audioPlayer.currentTime + changeInSeconds), audioPlayer.duration);
         }
@@ -41,22 +51,24 @@ document.addEventListener("DOMContentLoaded", function() {
     };
 
     playPauseBtn.addEventListener('click', () => {
-        audioPlayer.paused ? audioPlayer.play() : audioPlayer.pause();
-        updatePlayPauseBtn();
+        if (isReady) {
+            audioPlayer.paused ? audioPlayer.play() : audioPlayer.pause();
+            updatePlayPauseBtn();
+        }
     });
 
-    // دکمه‌های عقب و جلو
     backwardButton.addEventListener('click', () => setAudioCurrentTime(-5));
     forwardButton.addEventListener('click', () => setAudioCurrentTime(5));
 
     audioPlayer.addEventListener('timeupdate', updateProgress);
+    audioPlayer.addEventListener('progress', updateBuffered); // به‌روزرسانی نوار بافر
     audioPlayer.addEventListener('loadedmetadata', () => {
         durationTimeElem.textContent = formatTime(audioPlayer.duration);
         isReady = true; // موزیک آماده پخش است
     });
 
     audioPlayer.addEventListener('canplay', () => {
-        isReady = true; // موزیک اکنون آماده پخش است
+        isReady = true;
     });
 
     audioPlayer.addEventListener('playing', updatePlayPauseBtn);

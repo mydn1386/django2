@@ -246,3 +246,11 @@ body {
 .liked {
     color: red;
 }
+/*.buffered {*/
+/*    position: absolute;*/
+/*    top: 0;*/
+/*    left: 0;*/
+/*    height: 100%;*/
+/*    background: #659ca6; !* رنگ کم‌رنگ برای نشان دادن نوار بافر *!*/
+/*    !*z-index: 0; !* زیر نوار پیشرفت *!*!*/
+/*}*/
