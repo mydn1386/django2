@@ -56,7 +56,7 @@ document.addEventListener("DOMContentLoaded", function() {
             audioPlayer.currentTime = time;
             audioPlayer.play();
         } else {
-            alert("این قسمت هنوز دانلود نشده است. منتظر بمانید تا دانلود شود.");
+            console.log("این قسمت هنوز دانلود نشده است. منتظر بمانید تا دانلود شود.");
             audioPlayer.pause();
         }
     };
