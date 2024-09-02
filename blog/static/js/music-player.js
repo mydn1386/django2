@@ -1,68 +1,80 @@
-        document.addEventListener("DOMContentLoaded", function() {
-            var audioPlayer = document.getElementById('audioPlayer');
-            var progress = document.getElementById('progress');
-            var progressBar = document.getElementById('progressBar');
-            var currentTimeElem = document.getElementById('currentTime');
-            var durationTimeElem = document.getElementById('durationTime');
-            var playPauseBtn = document.getElementById('playPauseBtn');
-            var backwardButton = document.getElementById('backwardButton');
-            var forwardButton = document.getElementById('forwardButton');
-            var shareButton = document.getElementById('shareButton');
+document.addEventListener("DOMContentLoaded", function() {
+    const audioPlayer = document.getElementById('audioPlayer');
+    const progress = document.getElementById('progress');
+    const currentTimeElem = document.getElementById('currentTime');
+    const durationTimeElem = document.getElementById('durationTime');
+    const playPauseBtn = document.getElementById('playPauseBtn');
+    const backwardButton = document.getElementById('backwardButton');
+    const forwardButton = document.getElementById('forwardButton');
+    const progressBar = document.getElementById('progressBar');
+    const shareButton = document.getElementById('shareButton');
 
-            playPauseBtn.addEventListener('click', function() {
-                if (audioPlayer.paused || audioPlayer.ended) {
-                    audioPlayer.play();
-                    playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
-                } else {
-                    audioPlayer.pause();
-                    playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
-                }
-            });
+    let isReady = false; // برای بررسی این که موزیک آماده پخش است یا خیر
 
-            backwardButton.addEventListener('click', function() {
-                if (audioPlayer.readyState >= 3) {
-                    audioPlayer.currentTime = Math.max(0, audioPlayer.currentTime - 5);
-                }
-            });
+    const updatePlayPauseBtn = () => {
+        playPauseBtn.innerHTML = audioPlayer.paused ? '<i class="fas fa-play"></i>' : '<i class="fas fa-pause"></i>';
+    };
 
-            forwardButton.addEventListener('click', function() {
-                if (audioPlayer.readyState >= 3) {
-                    audioPlayer.currentTime = Math.min(audioPlayer.duration, audioPlayer.currentTime + 5);
-                }
-            });
+    const updateProgress = () => {
+        const percent = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+        progress.style.width = isNaN(percent) ? '0%' : percent + '%';
+        currentTimeElem.textContent = formatTime(audioPlayer.currentTime);
+    };
 
-            audioPlayer.addEventListener('timeupdate', function() {
-                if (audioPlayer.readyState >= 3) {
-                    var percent = (audioPlayer.currentTime / audioPlayer.duration) * 100;
-                    progress.style.width = percent + '%';
-                    currentTimeElem.textContent = formatTime(audioPlayer.currentTime);
-                }
-            });
+    const setAudioCurrentTime = (changeInSeconds) => {
+        // فقط زمانی که موزیک بارگذاری شده است و آماده است
+        if (isReady) {
+            audioPlayer.currentTime = Math.min(Math.max(0, audioPlayer.currentTime + changeInSeconds), audioPlayer.duration);
+        }
+    };
 
-            audioPlayer.addEventListener('loadedmetadata', function() {
-                durationTimeElem.textContent = formatTime(audioPlayer.duration);
-            });
+    const formatTime = (seconds) => {
+        const minutes = Math.floor(seconds / 60);
+        const secs = Math.floor(seconds % 60).toString().padStart(2, '0');
+        return `${minutes}:${secs}`;
+    };
 
-            progressBar.addEventListener('click', function(event) {
-                if (audioPlayer.readyState >= 3) {
-                    var percent = (event.offsetX / progressBar.offsetWidth);
-                    audioPlayer.currentTime = percent * audioPlayer.duration;
-                }
-            });
+    const shareInTelegram = () => {
+        const url = window.location.href;
+        const telegramUrl = `https://t.me/share/url?url=${encodeURIComponent(url)}`;
+        window.open(telegramUrl, '_blank');
+    };
 
-            function formatTime(seconds) {
-                var minutes = Math.floor(seconds / 60);
-                var seconds = Math.floor(seconds % 60);
-                if (seconds < 10) {
-                    seconds = '0' + seconds;
-                }
-                return minutes + ':' + seconds;
-            }
+    playPauseBtn.addEventListener('click', () => {
+        audioPlayer.paused ? audioPlayer.play() : audioPlayer.pause();
+        updatePlayPauseBtn();
+    });
 
-            shareButton.addEventListener('click', function() {
-                var url = window.location.href;
-                var telegramUrl = 'https://t.me/share/url?url=' + encodeURIComponent(url);
-                window.open(telegramUrl, '_blank');
-            });
-        });
+    // دکمه‌های عقب و جلو
+    backwardButton.addEventListener('click', () => setAudioCurrentTime(-5));
+    forwardButton.addEventListener('click', () => setAudioCurrentTime(5));
 
+    audioPlayer.addEventListener('timeupdate', updateProgress);
+    audioPlayer.addEventListener('loadedmetadata', () => {
+        durationTimeElem.textContent = formatTime(audioPlayer.duration);
+        isReady = true; // موزیک آماده پخش است
+    });
+
+    audioPlayer.addEventListener('canplay', () => {
+        isReady = true; // موزیک اکنون آماده پخش است
+    });
+
+    audioPlayer.addEventListener('playing', updatePlayPauseBtn);
+    audioPlayer.addEventListener('pause', updatePlayPauseBtn);
+    audioPlayer.addEventListener('ended', () => {
+        updatePlayPauseBtn();
+    });
+
+    progressBar.addEventListener('click', (event) => {
+        if (isReady) {
+            const percent = (event.offsetX / progressBar.offsetWidth);
+            audioPlayer.currentTime = percent * audioPlayer.duration;
+        }
+    });
+
+    audioPlayer.addEventListener('error', () => {
+        console.error('Error occurred while trying to play the audio.');
+    });
+
+    shareButton.addEventListener('click', shareInTelegram);
+});
