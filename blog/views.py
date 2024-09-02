@@ -11,7 +11,6 @@ from taggit.models import Tag
 from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank, TrigramSimilarity
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
-from django.views.decorators.http import require_POST
 
 
 def postlist(request, tag_slug=None, category_slug=None):
@@ -69,7 +68,6 @@ def postdetail(request, slug, pk, post=None):
             return redirect('blog:post_detail', slug=post.slug, pk=post.pk)
     else:
         comment_form = CommentForm()
-
 
     return render(request, 'blog/post/detail.html', {
         'post': post,
@@ -218,7 +216,7 @@ def register(request):
     if request.method == "POST":
         form = RegisterForm(request.POST)
         if form.is_valid():
-            user = form.save()
+            form.save()
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
             user = authenticate(username=username, password=password)
@@ -231,5 +229,3 @@ def register(request):
     else:
         form = RegisterForm()
     return render(request, 'blog/forms/register.html', {'form': form})
-
-

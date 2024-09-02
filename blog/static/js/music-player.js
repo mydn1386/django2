@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", function() {
     const audioPlayer = document.getElementById('audioPlayer');
     const progress = document.getElementById('progress');
-    const bufferedBar = document.getElementById('buffered'); // نوار بافر
+    const bufferedBar = document.getElementById('buffered');
     const currentTimeElem = document.getElementById('currentTime');
     const durationTimeElem = document.getElementById('durationTime');
     const playPauseBtn = document.getElementById('playPauseBtn');
@@ -10,7 +10,8 @@ document.addEventListener("DOMContentLoaded", function() {
     const progressBar = document.getElementById('progressBar');
     const shareButton = document.getElementById('shareButton');
 
-    let isReady = false; // برای بررسی این که موزیک آماده پخش است یا خیر
+    let isReady = false;
+    let desiredTime = null;
 
     const updatePlayPauseBtn = () => {
         playPauseBtn.innerHTML = audioPlayer.paused ? '<i class="fas fa-play"></i>' : '<i class="fas fa-pause"></i>';
@@ -22,7 +23,6 @@ document.addEventListener("DOMContentLoaded", function() {
         currentTimeElem.textContent = formatTime(audioPlayer.currentTime);
     };
 
-    // برای به‌روزرسانی نوار بافر
     const updateBuffered = () => {
         const buffered = audioPlayer.buffered;
         if (buffered.length > 0) {
@@ -34,7 +34,30 @@ document.addEventListener("DOMContentLoaded", function() {
 
     const setAudioCurrentTime = (changeInSeconds) => {
         if (isReady) {
-            audioPlayer.currentTime = Math.min(Math.max(0, audioPlayer.currentTime + changeInSeconds), audioPlayer.duration);
+            desiredTime = Math.min(Math.max(0, audioPlayer.currentTime + changeInSeconds), audioPlayer.duration);
+            checkBufferedAndPlay(desiredTime);
+        }
+    };
+
+    const checkBufferedAndPlay = (time) => {
+        const buffered = audioPlayer.buffered;
+        let isBuffered = false;
+
+        for (let i = 0; i < buffered.length; i++) {
+            const start = buffered.start(i);
+            const end = buffered.end(i);
+            if (time >= start && time <= end) {
+                isBuffered = true;
+                break;
+            }
+        }
+
+        if (isBuffered) {
+            audioPlayer.currentTime = time;
+            audioPlayer.play();
+        } else {
+            alert("این قسمت هنوز دانلود نشده است. منتظر بمانید تا دانلود شود.");
+            audioPlayer.pause();
         }
     };
 
@@ -61,26 +84,29 @@ document.addEventListener("DOMContentLoaded", function() {
     forwardButton.addEventListener('click', () => setAudioCurrentTime(5));
 
     audioPlayer.addEventListener('timeupdate', updateProgress);
-    audioPlayer.addEventListener('progress', updateBuffered); // به‌روزرسانی نوار بافر
+    audioPlayer.addEventListener('progress', updateBuffered);
     audioPlayer.addEventListener('loadedmetadata', () => {
         durationTimeElem.textContent = formatTime(audioPlayer.duration);
-        isReady = true; // موزیک آماده پخش است
+        isReady = true;
     });
 
     audioPlayer.addEventListener('canplay', () => {
+        if (desiredTime !== null) {
+            checkBufferedAndPlay(desiredTime);
+            desiredTime = null;
+        }
         isReady = true;
     });
 
     audioPlayer.addEventListener('playing', updatePlayPauseBtn);
     audioPlayer.addEventListener('pause', updatePlayPauseBtn);
-    audioPlayer.addEventListener('ended', () => {
-        updatePlayPauseBtn();
-    });
+    audioPlayer.addEventListener('ended', updatePlayPauseBtn);
 
     progressBar.addEventListener('click', (event) => {
         if (isReady) {
             const percent = (event.offsetX / progressBar.offsetWidth);
-            audioPlayer.currentTime = percent * audioPlayer.duration;
+            const time = percent * audioPlayer.duration;
+            checkBufferedAndPlay(time);
         }
     });
 
